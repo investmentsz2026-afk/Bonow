@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   User,
@@ -68,7 +68,7 @@ interface UserProfile {
   pushNotifications: boolean;
 }
 
-export default function ProfilePage() {
+function ProfileContent() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -876,5 +876,19 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-96 w-full items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
+        </div>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
   );
 }
