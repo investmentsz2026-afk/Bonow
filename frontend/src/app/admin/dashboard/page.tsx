@@ -2396,13 +2396,13 @@ export default function AdminDashboardPage() {
                 setRoleFilter('');
                 setStatusFilter('');
               }}
-              className={`flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold shrink-0 transition ${
+              className={`flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold shrink-0 transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 dark:bg-zinc-950 dark:border-gray-800 dark:text-gray-400 dark:hover:bg-zinc-900'
+                  ? 'bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 border border-violet-400/40 scale-[1.02]'
+                  : 'bg-slate-900/90 border border-slate-800/90 text-slate-400 hover:bg-slate-800/80 hover:text-slate-100 hover:border-slate-700 dark:bg-zinc-900/90 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-white'
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className={`h-4 w-4 ${activeTab === tab.id ? 'text-white' : 'text-violet-400'}`} />
               <span>{tab.label}</span>
               {tab.id === 'promotionsPage' &&
                 adminCompanyAds.filter((a) => a.status === 'INACTIVE').length > 0 && (
@@ -3025,12 +3025,12 @@ export default function AdminDashboardPage() {
 
           {/* TAB 2: USUARIOS */}
           {activeTab === 'users' && (
-            <div className="space-y-6">
+            <div className="space-y-6 text-left">
               {/* Controles de Búsqueda y Filtros */}
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-between bg-white dark:bg-zinc-950 p-4 rounded-3xl border border-gray-200 dark:border-gray-800">
-                <div className="flex flex-1 gap-2 max-w-md">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-between bg-gradient-to-r from-slate-900/95 via-slate-900/90 to-indigo-950/70 p-5 rounded-3xl border border-slate-800 shadow-xl backdrop-blur-md">
+                <div className="flex flex-1 gap-3 max-w-lg">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Search className="absolute left-3.5 top-3 h-4 w-4 text-violet-400" />
                     <input
                       type="text"
                       placeholder="Buscar por nombre o correo..."
@@ -3039,7 +3039,7 @@ export default function AdminDashboardPage() {
                         setSearch(e.target.value);
                         setPage(1);
                       }}
-                      className="w-full rounded-2xl border border-gray-200 bg-white py-2 pl-9 pr-3 text-xs dark:border-gray-800 dark:bg-zinc-900"
+                      className="w-full rounded-2xl border border-slate-700/60 bg-slate-950/80 py-2.5 pl-10 pr-4 text-xs font-medium text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all shadow-inner"
                     />
                   </div>
                   <select
@@ -3048,12 +3048,12 @@ export default function AdminDashboardPage() {
                       setRoleFilter(e.target.value);
                       setPage(1);
                     }}
-                    className="rounded-2xl border border-gray-200 py-2 px-3 text-xs dark:border-gray-800 dark:bg-zinc-900 dark:text-white"
+                    className="rounded-2xl border border-slate-700/60 bg-slate-950/80 py-2.5 px-4 text-xs font-semibold text-slate-200 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all shadow-inner"
                   >
-                    <option value="">Todos los Roles</option>
-                    <option value="USER">Usuario (USER)</option>
-                    <option value="BUSINESS">Comercio (BUSINESS)</option>
-                    <option value="ADMIN">Administrador (ADMIN)</option>
+                    <option value="" className="bg-slate-900 text-slate-300">Todos los Roles</option>
+                    <option value="USER" className="bg-slate-900 text-slate-300">Usuario (USER)</option>
+                    <option value="BUSINESS" className="bg-slate-900 text-slate-300">Comercio (BUSINESS)</option>
+                    <option value="ADMIN" className="bg-slate-900 text-slate-300">Administrador (ADMIN)</option>
                   </select>
                 </div>
 
@@ -3078,147 +3078,184 @@ export default function AdminDashboardPage() {
                       ]);
                       handleExportCSV('usuarios_bonow', headers, rows);
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-3.5 py-2 text-xs font-bold text-gray-600 hover:bg-gray-50 dark:border-gray-850 dark:bg-zinc-900 dark:text-gray-400"
+                    className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white border border-violet-400/30 px-4 py-2.5 text-xs font-bold shadow-md shadow-violet-950/50 hover:shadow-violet-600/30 transition-all active:scale-95"
                   >
-                    <Download className="h-4 w-4" />
-                    Exportar
+                    <Download className="h-4 w-4 text-violet-200" />
+                    <span>Exportar CSV</span>
                   </button>
                 </div>
               </div>
 
               {/* Acciones Masivas */}
               {selectedIds.size > 0 && (
-                <div className="flex items-center gap-2.5 rounded-2xl bg-violet-50 p-4 dark:bg-violet-950/20">
-                  <span className="text-xs font-bold text-violet-700 dark:text-violet-400">
-                    {selectedIds.size} seleccionados:
+                <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-violet-950/60 via-indigo-950/50 to-purple-950/60 p-4 border border-violet-800/50 shadow-lg backdrop-blur-md">
+                  <span className="text-xs font-bold text-violet-300 flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-violet-400 animate-ping" />
+                    {selectedIds.size} usuario(s) seleccionado(s)
                   </span>
-                  <button
-                    onClick={() => void handleBulkUserStatus('ACTIVE')}
-                    className="inline-flex items-center gap-1 rounded-xl bg-green-100 px-3 py-1.5 text-[10px] font-bold text-green-700 hover:bg-green-200 transition"
-                  >
-                    <UserCheck className="h-3 w-3" />
-                    Activar en Bloque
-                  </button>
-                  <button
-                    onClick={() => void handleBulkUserStatus('SUSPENDED')}
-                    className="inline-flex items-center gap-1 rounded-xl bg-red-100 px-3 py-1.5 text-[10px] font-bold text-red-700 hover:bg-red-200 transition"
-                  >
-                    <UserMinus className="h-3 w-3" />
-                    Suspender en Bloque
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => void handleBulkUserStatus('ACTIVE')}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 px-3.5 py-1.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500 hover:text-white transition-all shadow-sm active:scale-95"
+                    >
+                      <UserCheck className="h-3.5 w-3.5" />
+                      Activar en Bloque
+                    </button>
+                    <button
+                      onClick={() => void handleBulkUserStatus('SUSPENDED')}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-rose-500/20 border border-rose-500/40 px-3.5 py-1.5 text-xs font-bold text-rose-300 hover:bg-rose-500 hover:text-white transition-all shadow-sm active:scale-95"
+                    >
+                      <UserMinus className="h-3.5 w-3.5" />
+                      Suspender en Bloque
+                    </button>
+                  </div>
                 </div>
               )}
 
-              {/* Tabla de Usuarios */}
-              <div className="overflow-x-auto rounded-3xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-zinc-950">
-                <table className="min-w-full text-xs">
-                  <thead className="bg-gray-50 dark:bg-zinc-900 border-b border-gray-200 dark:border-gray-800 text-gray-500 font-bold">
-                    <tr>
-                      <th className="px-6 py-4 text-left">
-                        <input
-                          type="checkbox"
-                          checked={
-                            users.length > 0 &&
-                            users.every((u) => selectedIds.has(u.id))
-                          }
-                          onChange={() =>
-                            handleToggleSelectAll(users.map((u) => u.id))
-                          }
-                          className="rounded"
-                        />
-                      </th>
-                      <th className="px-6 py-4 text-left">Usuario</th>
-                      <th className="px-6 py-4 text-left">Roles</th>
-                      <th className="px-6 py-4 text-left">Estado</th>
-                      <th className="px-6 py-4 text-left">Ubicación</th>
-                      <th className="px-6 py-4 text-left">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-150 dark:divide-gray-850">
-                    {users.map((u) => (
-                      <tr
-                        key={u.id}
-                        className="hover:bg-gray-50 dark:hover:bg-zinc-900/60"
-                      >
-                        <td className="px-6 py-4">
+              {/* Tabla de Usuarios Rediseñada */}
+              <div className="overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-950/90 shadow-2xl backdrop-blur-md">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-xs">
+                    <thead className="bg-gradient-to-r from-slate-900 via-slate-900/90 to-indigo-950/80 text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-slate-800">
+                      <tr>
+                        <th className="px-6 py-4 text-left w-12">
                           <input
                             type="checkbox"
-                            checked={selectedIds.has(u.id)}
-                            onChange={() => handleToggleSelect(u.id)}
-                            className="rounded"
-                          />
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className="font-bold text-gray-800 dark:text-zinc-200">
-                            {u.firstName} {u.lastName}
-                          </p>
-                          <p className="text-gray-400">{u.email}</p>
-                        </td>
-                        <td className="px-6 py-4">
-                          {u.roles.map((r) => (
-                            <span
-                              key={r.name}
-                              className="mr-1 rounded bg-violet-50 px-2 py-0.5 text-[9px] font-bold text-violet-700 dark:bg-violet-950/20 dark:text-violet-400"
-                            >
-                              {r.name}
-                            </span>
-                          ))}
-                        </td>
-                        <td className="px-6 py-4">
-                          <span
-                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                              u.status === 'ACTIVE'
-                                ? 'bg-green-100 text-green-700 dark:bg-green-950/20'
-                                : 'bg-red-100 text-red-700 dark:bg-red-950/20'
-                            }`}
-                          >
-                            {u.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-gray-500">
-                          {u.city}, {u.state}
-                        </td>
-                        <td className="px-6 py-4 flex gap-2">
-                          <button
-                            onClick={() =>
-                              void handleUserStatusUpdate(
-                                u.id,
-                                u.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE',
-                              )
+                            checked={
+                              users.length > 0 &&
+                              users.every((u) => selectedIds.has(u.id))
                             }
-                            className={`rounded-xl px-3 py-1.5 font-bold transition ${
-                              u.status === 'ACTIVE'
-                                ? 'bg-red-50 text-red-650 hover:bg-red-100'
-                                : 'bg-green-50 text-green-700 hover:bg-green-100'
-                            }`}
-                          >
-                            {u.status === 'ACTIVE' ? 'Suspender' : 'Activar'}
-                          </button>
-                        </td>
+                            onChange={() =>
+                              handleToggleSelectAll(users.map((u) => u.id))
+                            }
+                            className="rounded border-slate-700 bg-slate-900 text-violet-600 focus:ring-violet-500 focus:ring-offset-slate-950"
+                          />
+                        </th>
+                        <th className="px-6 py-4 text-left">Usuario</th>
+                        <th className="px-6 py-4 text-left">Roles</th>
+                        <th className="px-6 py-4 text-left">Estado</th>
+                        <th className="px-6 py-4 text-left">Ubicación</th>
+                        <th className="px-6 py-4 text-left">Acciones</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-850/60">
+                      {users.map((u) => {
+                        const initials = `${u.firstName?.charAt(0) || ''}${u.lastName?.charAt(0) || ''}`.toUpperCase() || 'U';
+                        const isAdmin = u.roles.some((r) => r.name === 'ADMIN');
+                        const isBusiness = u.roles.some((r) => r.name === 'BUSINESS');
+
+                        return (
+                          <tr
+                            key={u.id}
+                            className="hover:bg-slate-900/70 transition-all duration-150 group"
+                          >
+                            <td className="px-6 py-4">
+                              <input
+                                type="checkbox"
+                                checked={selectedIds.has(u.id)}
+                                onChange={() => handleToggleSelect(u.id)}
+                                className="rounded border-slate-700 bg-slate-900 text-violet-600 focus:ring-violet-500 focus:ring-offset-slate-950"
+                              />
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className="h-9 w-9 rounded-full bg-gradient-to-br from-violet-500 via-purple-600 to-indigo-600 text-white font-black flex items-center justify-center text-xs shadow-md border border-violet-400/30 shrink-0">
+                                  {initials}
+                                </div>
+                                <div>
+                                  <p className="font-bold text-white text-sm group-hover:text-violet-300 transition-colors">
+                                    {u.firstName} {u.lastName}
+                                  </p>
+                                  <p className="text-xs text-slate-400 font-medium">{u.email}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex flex-wrap gap-1.5">
+                                {u.roles.map((r) => {
+                                  const roleName = r.name;
+                                  let badgeClass = 'bg-violet-500/15 border-violet-500/30 text-violet-300';
+                                  if (roleName === 'ADMIN') {
+                                    badgeClass = 'bg-amber-500/15 border-amber-500/30 text-amber-300';
+                                  } else if (roleName === 'BUSINESS') {
+                                    badgeClass = 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300';
+                                  }
+
+                                  return (
+                                    <span
+                                      key={r.name}
+                                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wider uppercase border shadow-xs ${badgeClass}`}
+                                    >
+                                      {r.name}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-xs ${
+                                  u.status === 'ACTIVE'
+                                    ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                                    : 'bg-rose-500/15 text-rose-400 border-rose-500/30'
+                                }`}
+                              >
+                                <span
+                                  className={`h-1.5 w-1.5 rounded-full ${
+                                    u.status === 'ACTIVE'
+                                      ? 'bg-emerald-400 animate-pulse'
+                                      : 'bg-rose-400'
+                                  }`}
+                                />
+                                {u.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-xs font-semibold text-slate-300">
+                              {u.city || u.state ? `${u.city || ''}${u.city && u.state ? ', ' : ''}${u.state || ''}` : 'No especificada'}
+                            </td>
+                            <td className="px-6 py-4">
+                              <button
+                                onClick={() =>
+                                  void handleUserStatusUpdate(
+                                    u.id,
+                                    u.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE',
+                                  )
+                                }
+                                className={`inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 border ${
+                                  u.status === 'ACTIVE'
+                                    ? 'bg-rose-500/10 text-rose-400 border-rose-500/30 hover:bg-rose-600 hover:text-white'
+                                    : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-600 hover:text-white'
+                                }`}
+                              >
+                                {u.status === 'ACTIVE' ? 'Suspender' : 'Activar'}
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* Paginación */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">
-                    Página {page} de {totalPages}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/60 border border-slate-800 p-4 rounded-2xl">
+                  <span className="text-xs text-slate-400 font-medium">
+                    Mostrando página <strong className="text-white">{page}</strong> de <strong className="text-white">{totalPages}</strong>
                   </span>
                   <div className="flex gap-2">
                     <button
                       disabled={page === 1}
                       onClick={() => setPage(page - 1)}
-                      className="rounded-xl border border-gray-200 px-3 py-1.5 hover:bg-gray-50 disabled:opacity-40"
+                      className="rounded-xl border border-slate-700/80 bg-slate-900 px-4 py-2 text-xs font-bold text-slate-200 hover:bg-violet-600 hover:border-violet-500 hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-200 disabled:hover:border-slate-700/80"
                     >
                       Anterior
                     </button>
                     <button
                       disabled={page === totalPages}
                       onClick={() => setPage(page + 1)}
-                      className="rounded-xl border border-gray-200 px-3 py-1.5 hover:bg-gray-50 disabled:opacity-40"
+                      className="rounded-xl border border-slate-700/80 bg-slate-900 px-4 py-2 text-xs font-bold text-slate-200 hover:bg-violet-600 hover:border-violet-500 hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-200 disabled:hover:border-slate-700/80"
                     >
                       Siguiente
                     </button>
