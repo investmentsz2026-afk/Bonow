@@ -1,0 +1,438 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                     String    @id @default(uuid())
+  email                  String    @unique
+  password               String
+  firstName              String?
+  lastName               String?
+  photoUrl               String?
+  phone                  String?
+  city                   String?
+  state                  String?
+  status                 String    @default("ACTIVE") // ACTIVE, SUSPENDED, PENDING
+  isEmailVerified        Boolean   @default(false)
+  emailVerificationToken String?
+  passwordResetToken     String?
+  passwordResetExpires   DateTime?
+  emailNotifications     Boolean   @default(true)
+  pushNotifications      Boolean   @default(true)
+  accumulatedSavings     Decimal   @default(0.00) @db.Decimal(10, 2)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  roles              Role[]             @relation("UserToRole")
+  refreshTokens      RefreshToken[]
+  favoriteCategories Category[]         @relation("UserFavoriteCategories")
+  membership         UserMembership?
+  company            Company?
+  redemptions        CouponRedemption[]
+  favorites          FavoriteCoupon[]
+  favoriteCompanies  FavoriteCompany[]
+  couponViews        CouponView[]
+  searchHistories    SearchHistory[]
+  membershipTransactions MembershipTransaction[]
+  payments               Payment[]
+  notifications          Notification[]
+  virtualCard            VirtualCard?
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique // USER, BUSINESS, ADMIN
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]       @relation("UserToRole")
+  permissions Permission[] @relation("RoleToPermission")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  name        String   @unique // e.g. read:coupons, write:coupons, manage:users
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  roles       Role[]   @relation("RoleToPermission")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum MembershipType {
+  MONTHLY
+  QUARTERLY
+  SEMESTERLY
+  ANNUAL
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  EXPIRING_SOON
+  EXPIRED
+  CANCELLED
+}
+
+model UserMembership {
+  id        String           @id @default(uuid())
+  userId    String           @unique
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      MembershipType
+  price     Decimal          @db.Decimal(10, 2)
+  currency  String           @default("MXN")
+  status    MembershipStatus @default(PENDING)
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model MembershipTransaction {
+  id        String         @id @default(uuid())
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      MembershipType
+  price     Decimal        @db.Decimal(10, 2)
+  currency  String         @default("MXN")
+  startDate DateTime
+  endDate   DateTime
+  paidAt    DateTime       @default(now())
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REFUNDED
+}
+
+model Payment {
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount       Decimal       @db.Decimal(10, 2)
+  currency     String        @default("MXN")
+  planType     MembershipType
+  status       PaymentStatus @default(PENDING)
+  provider     String
+  providerTxId String?       @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+enum CompanyStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+}
+
+model Company {
+  id            String        @id @default(uuid())
+  name          String
+  corporateName String
+  rfc           String
+  logoUrl       String?
+  images        String[]
+  description   String?
+  phone         String?
+  email         String?
+  website       String?
+  socialLinks   Json?
+  status        CompanyStatus @default(PENDING)
+  isFeatured    Boolean       @default(false)
+  couponCredits Int           @default(0)
+  ownerId       String        @unique
+  owner         User          @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  categoryId    String?
+  category      Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  categories    Category[]    @relation("CompanyCategories")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  branches    Branch[]
+  coupons     Coupon[]
+  advertising Advertising[]
+  favorites   FavoriteCompany[]
+  contracts   Contract[]
+}
+
+model Branch {
+  id           String   @id @default(uuid())
+  companyId    String
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name         String
+  address      String
+  state        String
+  city         String
+  municipality String?
+  zipCode      String?
+  latitude     Float
+  longitude    Float
+  schedules    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  coupons    Coupon[]   @relation("BranchToCoupon")
+  categories Category[] @relation("BranchCategories")
+
+  @@index([latitude, longitude])
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  coupons       Coupon[]
+  favoritedBy   User[]    @relation("UserFavoriteCategories")
+  companies     Company[]
+  companiesMany Company[] @relation("CompanyCategories")
+  branches      Branch[]  @relation("BranchCategories")
+}
+
+enum CouponStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+  REJECTED
+}
+
+enum CouponType {
+  SINGLE_USE
+  REUSABLE
+}
+
+model Coupon {
+  id              String       @id @default(uuid())
+  title           String
+  description     String
+  discount        String
+  imageUrl        String?
+  companyId       String
+  company         Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  categoryId      String
+  category        Category     @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  status          CouponStatus @default(PENDING)
+  rejectionReason String?
+  startDate       DateTime
+  endDate         DateTime
+  type            CouponType   @default(SINGLE_USE)
+  usageLimit      Int?
+  usageCount      Int          @default(0)
+  conditions      String?
+  code            String       @unique
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  branches    Branch[]           @relation("BranchToCoupon")
+  redemptions CouponRedemption[]
+  favorites   FavoriteCoupon[]
+  views       CouponView[]
+}
+
+enum RedemptionStatus {
+  PENDING
+  USED
+  CANCELLED
+}
+
+model CouponRedemption {
+  id            String           @id @default(uuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  couponId      String
+  coupon        Coupon           @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  redeemedAt    DateTime         @default(now())
+  generatedCode String           @unique
+  status        RedemptionStatus @default(USED)
+
+  @@index([userId, couponId])
+}
+
+model FavoriteCoupon {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  couponId  String
+  coupon    Coupon   @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, couponId])
+}
+
+model CouponView {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  couponId  String
+  coupon    Coupon   @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([couponId])
+}
+
+model SearchHistory {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query      String
+  searchedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model FavoriteCompany {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, companyId])
+}
+
+enum AdPosition {
+  HOME_HERO
+  HOME_CAROUSEL
+  SPONSORED_LIST
+  SIDEBAR
+  BOTTOM
+  FLOATING_MODAL
+  FLOATING_BANNER
+  HOME_SECTION
+}
+
+enum AdStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Advertising {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  imageUrl    String?
+  linkUrl     String?
+  adType      String     @default("BANNER") // BANNER, SPONSORED, NEWS, PROMO
+  views       Int        @default(0)
+  clicks      Int        @default(0)
+  companyId   String?
+  company     Company?   @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  startDate   DateTime
+  endDate     DateTime
+  position    String     @default("HOME_CAROUSEL")
+  status      AdStatus   @default(ACTIVE)
+  isFeatured  Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum ContractStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  RENEWED
+}
+
+model Contract {
+  id               String         @id @default(uuid())
+  companyId        String
+  company          Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title            String
+  description      String?
+  fileUrl          String?
+  startDate        DateTime
+  endDate          DateTime
+  status           ContractStatus @default(DRAFT)
+  signedByCompany  Boolean        @default(false)
+  signedByAdmin    Boolean        @default(false)
+  signedByCompanyAt DateTime?
+  signedByAdminAt  DateTime?
+  renewalNotes     String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  history          ContractHistory[]
+}
+
+model ContractHistory {
+  id             String   @id @default(uuid())
+  contractId     String
+  contract       Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  action         String   // CREATED, STATUS_CHANGE, FILE_UPLOADED, RENEWED, SIGNED
+  previousStatus String?
+  newStatus      String?
+  notes          String?
+  performedBy    String   // userId
+  performedAt    DateTime @default(now())
+}
+
+model News {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  imageUrl    String?
+  author      String?
+  status      String    @default("DRAFT") // DRAFT, PUBLISHED
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SystemSetting {
+  key         String    @id
+  value       String
+  description String?
+  updatedAt   DateTime  @updatedAt
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  message     String
+  type        String    // MEMBERSHIP_EXPIRING, NEW_COUPON, PROMOTION, FAVORITE_COMPANY, REDEMPTION_CONFIRM, PAYMENT_SUCCESS
+  channels    String[]  // EMAIL, WHATSAPP, PUSH
+  status      String    @default("SENT") // SENT, FAILED
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model VirtualCard {
+  id           String    @id @default(uuid())
+  cardNumber   String    @unique
+  cardType     String    @default("DIGITAL") // DIGITAL, PHYSICAL
+  status       String    @default("AVAILABLE") // AVAILABLE, REGISTERED
+  price        Decimal   @default(0.00) @db.Decimal(10, 2)
+  userId       String?   @unique
+  user         User?     @relation(fields: [userId], references: [id])
+  registeredAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
