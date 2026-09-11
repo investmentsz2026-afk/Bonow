@@ -41,5 +41,8 @@ async function bootstrapServer(): Promise<Express> {
 
 export default async function handler(req: Request, res: Response) {
   const appHandler = await bootstrapServer();
+  if (req.url.startsWith('/api')) {
+    req.url = req.url.replace(/^\/api/, '') || '/';
+  }
   return appHandler(req, res);
 }
