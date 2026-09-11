@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React from 'react';
 
 interface BonowLogoProps {

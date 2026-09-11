@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin, Search, Navigation, CheckCircle2, Locate } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

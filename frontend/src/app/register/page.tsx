@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,6 +26,7 @@ import {
 } from 'lucide-react';
 
 import { BonowLogo } from '@/components/layout/BonowLogo';
+
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
@@ -58,7 +61,7 @@ export default function RegisterPage() {
     const lastName = parts.slice(1).join(' ') || '.';
 
     try {
-      const res = await fetch('http://localhost:3001/auth/register', {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,7 +99,7 @@ export default function RegisterPage() {
   const handleSimulateVerification = async () => {
     if (!simToken) return;
     try {
-      const res = await fetch('http://localhost:3001/auth/verify-email', {
+      const res = await fetch(`${API_URL}/auth/verify-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: simToken }),

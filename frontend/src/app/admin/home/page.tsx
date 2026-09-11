@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -64,7 +66,7 @@ export default function AdminHomePage() {
       }
 
       try {
-        const res = await fetch('http://localhost:3001/admin/dashboard', {
+        const res = await fetch(`${API_URL}/admin/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

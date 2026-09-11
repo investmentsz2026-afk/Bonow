@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import {
   Menu,
@@ -101,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
       }
 
       try {
-        const res = await fetch('http://localhost:3001/notifications', {
+        const res = await fetch(`${API_URL}/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) return;
@@ -167,7 +169,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     const token = localStorage.getItem('accessToken');
     if (token && notif.status !== 'READ') {
       try {
-        await fetch(`http://localhost:3001/notifications/${notif.id}/read`, {
+        await fetch(`${API_URL}/notifications/${notif.id}/read`, {
           method: 'PATCH',
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -212,7 +214,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     if (!token) return;
 
     try {
-      await fetch('http://localhost:3001/notifications/read-all', {
+      await fetch(`${API_URL}/notifications/read-all`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -229,7 +231,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
       try {
-        await fetch('http://localhost:3001/auth/logout', {
+        await fetch(`${API_URL}/auth/logout`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ refreshToken }),

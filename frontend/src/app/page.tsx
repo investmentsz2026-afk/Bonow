@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -254,7 +256,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchRealCoupons = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons');
+        const res = await fetch(`${API_URL}/coupons`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {
@@ -271,7 +273,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchRealPromotions = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons/promotions-page');
+        const res = await fetch(`${API_URL}/coupons/promotions-page`);
         if (res.ok) {
           const data = await res.json();
           if (data && Array.isArray(data.items)) {
@@ -288,7 +290,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchPublicCompanies = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons/companies/public');
+        const res = await fetch(`${API_URL}/coupons/companies/public`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {
@@ -306,7 +308,7 @@ export default function LandingPage() {
     const fetchNearby = async () => {
       try {
         const res = await fetch(
-          'http://localhost:3001/geolocation/nearby?radius=50',
+          `${API_URL}/geolocation/nearby?radius=50`,
         );
         if (res.ok) {
           const data = await res.json();
@@ -325,7 +327,7 @@ export default function LandingPage() {
     const fetchMembershipPlans = async () => {
       try {
         const res = await fetch(
-          'http://localhost:3001/coupons/membership-plans',
+          `${API_URL}/coupons/membership-plans`,
         );
         if (res.ok) {
           const plans = await res.json();
@@ -356,7 +358,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchActiveAds = async () => {
       try {
-        const res = await fetch('http://localhost:3001/advertising/active');
+        const res = await fetch(`${API_URL}/advertising/active`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {
@@ -374,7 +376,7 @@ export default function LandingPage() {
     const fetchRealCategories = async () => {
       try {
         const res = await fetch(
-          'http://localhost:3001/coupons/categories/list',
+          `${API_URL}/coupons/categories/list`,
         );
         if (res.ok) {
           const data = await res.json();
@@ -392,7 +394,7 @@ export default function LandingPage() {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons/hero-slides');
+        const res = await fetch(`${API_URL}/coupons/hero-slides`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {

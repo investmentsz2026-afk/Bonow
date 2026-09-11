@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import {
   Search,
@@ -94,7 +96,7 @@ export default function MapPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons/categories');
+        const res = await fetch(`${API_URL}/coupons/categories`);
         if (res.ok) {
           const data = await res.json();
           setCategories(data);
@@ -125,7 +127,7 @@ export default function MapPage() {
       }
 
       const res = await fetch(
-        `http://localhost:3001/coupons/branches/map?${queryParams.toString()}`,
+        `${API_URL}/coupons/branches/map?${queryParams.toString()}`,
       );
       const data = await res.json();
 

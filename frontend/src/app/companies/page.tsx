@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -80,7 +82,7 @@ export default function CompaniesPage() {
     const fetchCompanies = async () => {
       try {
         const res = await fetch(
-          'http://localhost:3001/coupons/companies/public',
+          `${API_URL}/coupons/companies/public`,
         );
         if (res.ok) {
           const data = await res.json();
@@ -96,7 +98,7 @@ export default function CompaniesPage() {
           }
         } else {
           // Fallback a coupons
-          const resCoupons = await fetch('http://localhost:3001/coupons');
+          const resCoupons = await fetch(`${API_URL}/coupons`);
           if (resCoupons.ok) {
             const couponsData = await resCoupons.json();
             if (Array.isArray(couponsData)) {

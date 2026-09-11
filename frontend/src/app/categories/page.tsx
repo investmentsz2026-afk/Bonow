@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -139,7 +141,7 @@ export default function CategoriesPage() {
 
         // Cargar lista maestra de categorías del sistema
         const resCat = await fetch(
-          'http://localhost:3001/coupons/categories/list',
+          `${API_URL}/coupons/categories/list`,
         );
         if (resCat.ok) {
           const dataCat = await resCat.json();
@@ -151,7 +153,7 @@ export default function CategoriesPage() {
         // Si es empresa, obtener datos de su empresa para cargar las categorías asignadas
         if (isBiz && token) {
           const resComp = await fetch(
-            'http://localhost:3001/companies/my-company',
+            `${API_URL}/companies/my-company`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -203,7 +205,7 @@ export default function CategoriesPage() {
     setSuccessMsg(null);
 
     try {
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

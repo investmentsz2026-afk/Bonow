@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -139,7 +141,7 @@ export default function MembershipPage() {
 
       try {
         const resActive = await fetch(
-          'http://localhost:3001/memberships/active',
+          `${API_URL}/memberships/active`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -152,7 +154,7 @@ export default function MembershipPage() {
         const dataActive = await resActive.json();
 
         const resHistory = await fetch(
-          'http://localhost:3001/memberships/history',
+          `${API_URL}/memberships/history`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -162,7 +164,7 @@ export default function MembershipPage() {
         // Cargar saldo y paquetes de créditos si la cuenta es de empresa
         try {
           const resCredits = await fetch(
-            'http://localhost:3001/coupons/credit-balance',
+            `${API_URL}/coupons/credit-balance`,
             { headers: { Authorization: `Bearer ${token}` } },
           );
           if (resCredits.ok) {
@@ -180,7 +182,7 @@ export default function MembershipPage() {
         // Cargar planes de membresía dinámicos desde backend
         try {
           const resPlans = await fetch(
-            'http://localhost:3001/coupons/membership-plans',
+            `${API_URL}/coupons/membership-plans`,
           );
           if (resPlans.ok) {
             const plansData = await resPlans.json();
@@ -228,7 +230,7 @@ export default function MembershipPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/payments/stripe/create-credit-checkout-session', {
+      const res = await fetch(`${API_URL}/payments/stripe/create-credit-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -255,7 +257,7 @@ export default function MembershipPage() {
   const [stripeConfig, setStripeConfig] = useState<{ isConfigured: boolean; publishableKey?: string } | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/payments/stripe/config')
+    fetch(`${API_URL}/payments/stripe/config`)
       .then((res) => res.json())
       .then((data) => setStripeConfig(data))
       .catch(() => {});
@@ -272,7 +274,7 @@ export default function MembershipPage() {
 
     try {
       const res = await fetch(
-        'http://localhost:3001/payments/stripe/create-checkout-session',
+        `${API_URL}/payments/stripe/create-checkout-session`,
         {
           method: 'POST',
           headers: {

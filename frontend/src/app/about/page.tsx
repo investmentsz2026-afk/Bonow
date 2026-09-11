@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -67,7 +69,7 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons/about-page');
+        const res = await fetch(`${API_URL}/coupons/about-page`);
         if (res.ok) {
           const data = await res.json();
           if (data && data.title) {

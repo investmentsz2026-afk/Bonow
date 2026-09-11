@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -167,7 +169,7 @@ export default function AnalyticsDashboard() {
 
     try {
       const resMetrics = await fetch(
-        `http://localhost:3001/analytics/${endpoint}`,
+        `${API_URL}/analytics/${endpoint}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -184,7 +186,7 @@ export default function AnalyticsDashboard() {
         if (categoryFilter) queryParams.set('categoryId', categoryFilter);
 
         const resReports = await fetch(
-          `http://localhost:3001/analytics/admin/reports?${queryParams.toString()}`,
+          `${API_URL}/analytics/admin/reports?${queryParams.toString()}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

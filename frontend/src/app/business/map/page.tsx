@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -77,7 +79,7 @@ export default function BusinessMapPage() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) {
@@ -102,7 +104,7 @@ export default function BusinessMapPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:3001/coupons/categories/list');
+      const res = await fetch(`${API_URL}/coupons/categories/list`);
       if (res.ok) {
         const data = await res.json();
         setAllCategories(data);
@@ -130,8 +132,8 @@ export default function BusinessMapPage() {
     try {
       const isEdit = !!branchForm.id;
       const url = isEdit
-        ? `http://localhost:3001/companies/my-company/branches/${branchForm.id}`
-        : 'http://localhost:3001/companies/my-company/branches';
+        ? `${API_URL}/companies/my-company/branches/${branchForm.id}`
+        : `${API_URL}/companies/my-company/branches`;
       const method = isEdit ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -179,7 +181,7 @@ export default function BusinessMapPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/companies/my-company/branches/${branchId}`,
+        `${API_URL}/companies/my-company/branches/${branchId}`,
         {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },

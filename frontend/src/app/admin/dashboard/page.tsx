@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -547,7 +549,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         headers,
       });
       if (res.ok) {
@@ -596,7 +598,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/credit-packages', { headers });
+      const res = await fetch(`${API_URL}/admin/credit-packages`, { headers });
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
@@ -613,7 +615,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     setSavingCreditPackages(true);
     try {
-      const res = await fetch('http://localhost:3001/admin/credit-packages', {
+      const res = await fetch(`${API_URL}/admin/credit-packages`, {
         method: 'PUT',
         headers: {
           ...headers,
@@ -653,7 +655,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         headers,
       });
       if (res.ok) {
@@ -713,7 +715,7 @@ export default function AdminDashboardPage() {
         updatedList.push(planObj);
       }
 
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -775,7 +777,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         headers,
       });
       if (res.ok) {
@@ -840,7 +842,7 @@ export default function AdminDashboardPage() {
         ],
       };
 
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -944,7 +946,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         headers,
       });
       if (res.ok) {
@@ -991,7 +993,7 @@ export default function AdminDashboardPage() {
         items: itemsToSave,
       };
 
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -1037,7 +1039,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/advertising', { headers });
+      const res = await fetch(`${API_URL}/advertising`, { headers });
       const data = await res.json();
       if (res.ok && isMounted) {
         setAdminCompanyAds(Array.isArray(data) ? data : []);
@@ -1054,7 +1056,7 @@ export default function AdminDashboardPage() {
     setSuccess(null);
     try {
       const res = await fetch(
-        `http://localhost:3001/advertising/${adId}/status`,
+        `${API_URL}/advertising/${adId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -1080,7 +1082,7 @@ export default function AdminDashboardPage() {
     setSuccess(null);
     try {
       const res = await fetch(
-        `http://localhost:3001/advertising/${adId}/status`,
+        `${API_URL}/advertising/${adId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -1172,7 +1174,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/branches', {
+      const res = await fetch(`${API_URL}/admin/branches`, {
         headers,
       });
       if (res.ok) {
@@ -1200,8 +1202,8 @@ export default function AdminDashboardPage() {
     try {
       const isEdit = !!branchForm.id;
       const url = isEdit
-        ? `http://localhost:3001/admin/branches/${branchForm.id}`
-        : 'http://localhost:3001/admin/branches';
+        ? `${API_URL}/admin/branches/${branchForm.id}`
+        : `${API_URL}/admin/branches`;
       const method = isEdit ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -1236,7 +1238,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch(`http://localhost:3001/admin/branches/${id}`, {
+      const res = await fetch(`${API_URL}/admin/branches/${id}`, {
         method: 'DELETE',
         headers,
       });
@@ -1284,7 +1286,7 @@ export default function AdminDashboardPage() {
         updatedList.push(slideObj);
       }
 
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -1311,7 +1313,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     const updatedList = adminHeroSlides.filter((s) => s.id !== id);
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -1336,7 +1338,7 @@ export default function AdminDashboardPage() {
     try {
       const token = localStorage.getItem('accessToken');
       const res = await fetch(
-        `http://localhost:3001/admin/virtual-cards/${editingCard.id}/price`,
+        `${API_URL}/admin/virtual-cards/${editingCard.id}/price`,
         {
           method: 'PUT',
           headers: {
@@ -1367,7 +1369,7 @@ export default function AdminDashboardPage() {
     try {
       const token = localStorage.getItem('accessToken');
       const res = await fetch(
-        `http://localhost:3001/admin/virtual-cards/${deletingCard.id}`,
+        `${API_URL}/admin/virtual-cards/${deletingCard.id}`,
         {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
@@ -1534,7 +1536,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         headers,
       });
       const data = await res.json();
@@ -1590,7 +1592,7 @@ export default function AdminDashboardPage() {
           : undefined,
       };
 
-      const res = await fetch('http://localhost:3001/coupons', {
+      const res = await fetch(`${API_URL}/coupons`, {
         method: 'POST',
         headers,
         body: JSON.stringify(payload),
@@ -1645,7 +1647,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/dashboard', {
+      const res = await fetch(`${API_URL}/admin/dashboard`, {
         headers,
       });
       const data = await res.json();
@@ -1664,7 +1666,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/users?search=${search}&role=${roleFilter}&status=${statusFilter}&page=${page}&limit=10`,
+        `${API_URL}/admin/users?search=${search}&role=${roleFilter}&status=${statusFilter}&page=${page}&limit=10`,
         { headers },
       );
       const data = await res.json();
@@ -1681,7 +1683,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/companies', { headers });
+      const res = await fetch(`${API_URL}/companies`, { headers });
       const data = await res.json();
       if (res.ok && isMounted) {
         const compList = Array.isArray(data) ? data : (data.items || data.companies || []);
@@ -1697,7 +1699,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/coupons?search=${search}&status=${statusFilter}&page=${page}&limit=10`,
+        `${API_URL}/admin/coupons?search=${search}&status=${statusFilter}&page=${page}&limit=10`,
         { headers },
       );
       const data = await res.json();
@@ -1718,7 +1720,7 @@ export default function AdminDashboardPage() {
     setSuccess(null);
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/coupons/${couponId}/approve`,
+        `${API_URL}/admin/coupons/${couponId}/approve`,
         { method: 'PUT', headers },
       );
       const data = await res.json();
@@ -1744,7 +1746,7 @@ export default function AdminDashboardPage() {
     setSuccess(null);
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/coupons/${rejectingCoupon.id}/reject`,
+        `${API_URL}/admin/coupons/${rejectingCoupon.id}/reject`,
         {
           method: 'PUT',
           headers,
@@ -1769,7 +1771,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/memberships?search=${search}&status=${statusFilter}&page=${page}&limit=10`,
+        `${API_URL}/admin/memberships?search=${search}&status=${statusFilter}&page=${page}&limit=10`,
         { headers },
       );
       const data = await res.json();
@@ -1787,7 +1789,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/payments?search=${search}&status=${statusFilter}&page=${page}&limit=10`,
+        `${API_URL}/admin/payments?search=${search}&status=${statusFilter}&page=${page}&limit=10`,
         { headers },
       );
       const data = await res.json();
@@ -1804,7 +1806,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/categories', {
+      const res = await fetch(`${API_URL}/admin/categories`, {
         headers,
       });
       const data = await res.json();
@@ -1820,7 +1822,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/news', { headers });
+      const res = await fetch(`${API_URL}/admin/news`, { headers });
       const data = await res.json();
       if (res.ok && isMounted) {
         setNews(data);
@@ -1834,7 +1836,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         headers,
       });
       const data = await res.json();
@@ -1851,7 +1853,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/virtual-cards?search=${search}&status=${statusFilter}&cardType=${cardTypeFilter}&page=${page}&limit=10`,
+        `${API_URL}/admin/virtual-cards?search=${search}&status=${statusFilter}&cardType=${cardTypeFilter}&page=${page}&limit=10`,
         { headers },
       );
       const data = await res.json();
@@ -1872,7 +1874,7 @@ export default function AdminDashboardPage() {
     setSuccess(null);
     try {
       const res = await fetch(
-        'http://localhost:3001/admin/virtual-cards/generate',
+        `${API_URL}/admin/virtual-cards/generate`,
         {
           method: 'POST',
           headers,
@@ -1975,7 +1977,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers || selectedIds.size === 0) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/users/bulk-status', {
+      const res = await fetch(`${API_URL}/admin/users/bulk-status`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ userIds: Array.from(selectedIds), status }),
@@ -1994,7 +1996,7 @@ export default function AdminDashboardPage() {
     if (!headers || selectedIds.size === 0) return;
     try {
       const res = await fetch(
-        'http://localhost:3001/admin/coupons/bulk-status',
+        `${API_URL}/admin/coupons/bulk-status`,
         {
           method: 'POST',
           headers,
@@ -2016,7 +2018,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/users/${userId}/status`,
+        `${API_URL}/admin/users/${userId}/status`,
         {
           method: 'PUT',
           headers,
@@ -2038,7 +2040,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/companies/${companyId}/status`,
+        `${API_URL}/companies/${companyId}/status`,
         {
           method: 'PUT',
           headers,
@@ -2059,7 +2061,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/companies/${companyId}/toggle-featured`,
+        `${API_URL}/companies/${companyId}/toggle-featured`,
         {
           method: 'PUT',
           headers,
@@ -2079,7 +2081,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/advertising/${adId}/toggle-featured`,
+        `${API_URL}/advertising/${adId}/toggle-featured`,
         {
           method: 'PUT',
           headers,
@@ -2100,7 +2102,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/payments/${paymentId}/refund`,
+        `${API_URL}/admin/payments/${paymentId}/refund`,
         {
           method: 'POST',
           headers,
@@ -2123,7 +2125,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/payments/${paymentId}/status`,
+        `${API_URL}/admin/payments/${paymentId}/status`,
         {
           method: 'PUT',
           headers,
@@ -2149,8 +2151,8 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     const method = categoryForm.id ? 'PUT' : 'POST';
     const url = categoryForm.id
-      ? `http://localhost:3001/admin/categories/${categoryForm.id}`
-      : 'http://localhost:3001/admin/categories';
+      ? `${API_URL}/admin/categories/${categoryForm.id}`
+      : `${API_URL}/admin/categories`;
 
     try {
       const res = await fetch(url, {
@@ -2178,7 +2180,7 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     setSavingInlineCategory(true);
     try {
-      const res = await fetch('http://localhost:3001/admin/categories', {
+      const res = await fetch(`${API_URL}/admin/categories`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -2213,7 +2215,7 @@ export default function AdminDashboardPage() {
     setIsDeletingCategory(true);
     try {
       const res = await fetch(
-        `http://localhost:3001/admin/categories/${deletingCategory.id}`,
+        `${API_URL}/admin/categories/${deletingCategory.id}`,
         {
           method: 'DELETE',
           headers,
@@ -2241,8 +2243,8 @@ export default function AdminDashboardPage() {
     if (!headers) return;
     const method = newsForm.id ? 'PUT' : 'POST';
     const url = newsForm.id
-      ? `http://localhost:3001/admin/news/${newsForm.id}`
-      : 'http://localhost:3001/admin/news';
+      ? `${API_URL}/admin/news/${newsForm.id}`
+      : `${API_URL}/admin/news`;
 
     try {
       const res = await fetch(url, {
@@ -2271,7 +2273,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch(`http://localhost:3001/admin/news/${id}`, {
+      const res = await fetch(`${API_URL}/admin/news/${id}`, {
         method: 'DELETE',
         headers,
       });
@@ -2289,7 +2291,7 @@ export default function AdminDashboardPage() {
     const headers = getHeaders();
     if (!headers) return;
     try {
-      const res = await fetch('http://localhost:3001/admin/settings', {
+      const res = await fetch(`${API_URL}/admin/settings`, {
         method: 'POST',
         headers,
         body: JSON.stringify(settingForm),

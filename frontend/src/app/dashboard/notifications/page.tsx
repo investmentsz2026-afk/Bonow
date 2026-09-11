@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -156,7 +158,7 @@ export default function NotificationsPage() {
       }
 
       try {
-        const res = await fetch('http://localhost:3001/notifications', {
+        const res = await fetch(`${API_URL}/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -194,7 +196,7 @@ export default function NotificationsPage() {
     if (!token) return;
 
     try {
-      await fetch(`http://localhost:3001/notifications/${id}/read`, {
+      await fetch(`${API_URL}/notifications/${id}/read`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -211,7 +213,7 @@ export default function NotificationsPage() {
     if (!token) return;
 
     try {
-      await fetch('http://localhost:3001/notifications/read-all', {
+      await fetch(`${API_URL}/notifications/read-all`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` },
       });

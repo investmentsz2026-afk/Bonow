@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -90,7 +92,7 @@ export default function BusinessCompanyPage() {
         return;
       }
       try {
-        const res = await fetch('http://localhost:3001/companies/my-company', {
+        const res = await fetch(`${API_URL}/companies/my-company`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -104,7 +106,7 @@ export default function BusinessCompanyPage() {
 
         if (isMounted) setCompany(data as Company);
 
-        const resCats = await fetch('http://localhost:3001/coupons/categories/list');
+        const resCats = await fetch(`${API_URL}/coupons/categories/list`);
         if (resCats.ok && isMounted) {
           const catsData = await resCats.json();
           setAllCategories(catsData);
@@ -140,7 +142,7 @@ export default function BusinessCompanyPage() {
     if (!token) return;
     setSavingCompany(true);
     try {
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -181,8 +183,8 @@ export default function BusinessCompanyPage() {
     try {
       const isEdit = !!branchForm.id;
       const url = isEdit
-        ? `http://localhost:3001/companies/my-company/branches/${branchForm.id}`
-        : 'http://localhost:3001/companies/my-company/branches';
+        ? `${API_URL}/companies/my-company/branches/${branchForm.id}`
+        : `${API_URL}/companies/my-company/branches`;
       const method = isEdit ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -220,7 +222,7 @@ export default function BusinessCompanyPage() {
     if (!token) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/companies/my-company/branches/${branchId}`,
+        `${API_URL}/companies/my-company/branches/${branchId}`,
         {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },

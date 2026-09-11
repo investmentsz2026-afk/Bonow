@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -103,7 +105,7 @@ export default function AdminAdsPage() {
 
     try {
       // 1. Obtener todos los anuncios
-      const resAds = await fetch('http://localhost:3001/advertising', {
+      const resAds = await fetch(`${API_URL}/advertising`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resAds.status === 401) {
@@ -116,7 +118,7 @@ export default function AdminAdsPage() {
       setAds(dataAds as Ad[]);
 
       // 2. Obtener lista de empresas para asociar patrocinadores
-      const resCompanies = await fetch('http://localhost:3001/companies', {
+      const resCompanies = await fetch(`${API_URL}/companies`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const dataCompanies = await resCompanies.json();
@@ -140,12 +142,12 @@ export default function AdminAdsPage() {
         return;
       }
       try {
-        const resAds = await fetch('http://localhost:3001/advertising', {
+        const resAds = await fetch(`${API_URL}/advertising`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const dataAds = await resAds.json();
 
-        const resCompanies = await fetch('http://localhost:3001/companies', {
+        const resCompanies = await fetch(`${API_URL}/companies`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const dataCompanies = await resCompanies.json();
@@ -213,8 +215,8 @@ export default function AdminAdsPage() {
 
     const token = localStorage.getItem('accessToken');
     const url = editingAd
-      ? `http://localhost:3001/advertising/${editingAd.id}`
-      : 'http://localhost:3001/advertising';
+      ? `${API_URL}/advertising/${editingAd.id}`
+      : `${API_URL}/advertising`;
     const method = editingAd ? 'PUT' : 'POST';
 
     try {
@@ -259,7 +261,7 @@ export default function AdminAdsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch(`http://localhost:3001/advertising/${adId}`, {
+      const res = await fetch(`${API_URL}/advertising/${adId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -285,7 +287,7 @@ export default function AdminAdsPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/advertising/${ad.id}/status`,
+        `${API_URL}/advertising/${ad.id}/status`,
         {
           method: 'PUT',
           headers: {

@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -145,7 +147,7 @@ export default function AdminContractsPage() {
     if (!token) return;
 
     try {
-      const res = await fetch('http://localhost:3001/contracts', {
+      const res = await fetch(`${API_URL}/contracts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -169,7 +171,7 @@ export default function AdminContractsPage() {
     if (!token) return;
 
     try {
-      const res = await fetch('http://localhost:3001/companies', {
+      const res = await fetch(`${API_URL}/companies`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -200,7 +202,7 @@ export default function AdminContractsPage() {
     setError(null);
 
     try {
-      const res = await fetch('http://localhost:3001/contracts', {
+      const res = await fetch(`${API_URL}/contracts`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -233,7 +235,7 @@ export default function AdminContractsPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/contracts/${contractId}/status`,
+        `${API_URL}/contracts/${contractId}/status`,
         {
           method: 'PUT',
           headers: {
@@ -258,7 +260,7 @@ export default function AdminContractsPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/contracts/${contract.id}/history`,
+        `${API_URL}/contracts/${contract.id}/history`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -282,7 +284,7 @@ export default function AdminContractsPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/contracts/${selectedContract.id}/renew`,
+        `${API_URL}/contracts/${selectedContract.id}/renew`,
         {
           method: 'PUT',
           headers: {

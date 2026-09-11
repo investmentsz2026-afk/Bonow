@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -126,7 +128,7 @@ function CouponsContent() {
 
       try {
         // 1. Cargar Categorías reales siempre
-        const resCat = await fetch('http://localhost:3001/coupons/categories/list');
+        const resCat = await fetch(`${API_URL}/coupons/categories/list`);
         if (resCat.ok && isMounted) {
           const dataCat = await resCat.json();
           setCategoriesList(Array.isArray(dataCat) ? dataCat : []);
@@ -135,7 +137,7 @@ function CouponsContent() {
         // 2. Cargar IDs de favoritos del usuario si hay token
         if (token && isMounted) {
           try {
-            const resFavIds = await fetch('http://localhost:3001/personalization/favorite/coupon-ids', {
+            const resFavIds = await fetch(`${API_URL}/personalization/favorite/coupon-ids`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (resFavIds.ok) {
@@ -148,7 +150,7 @@ function CouponsContent() {
 
           // Cargar Redenciones del Usuario ("Mis Cupones" y "Mis Usos")
           try {
-            const resMyRed = await fetch('http://localhost:3001/coupons/my-redemptions', {
+            const resMyRed = await fetch(`${API_URL}/coupons/my-redemptions`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (resMyRed.ok && isMounted) {
@@ -163,7 +165,7 @@ function CouponsContent() {
         // 3. Cargar datos específicos del Tab
         if (activeTab === 'favorites') {
           if (token && isMounted) {
-            const resFavs = await fetch('http://localhost:3001/personalization/favorite/coupons', {
+            const resFavs = await fetch(`${API_URL}/personalization/favorite/coupons`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (resFavs.ok && isMounted) {
@@ -173,7 +175,7 @@ function CouponsContent() {
           }
         } else {
           // Tab "all" (Todos los cupones activos)
-          let url = 'http://localhost:3001/coupons';
+          let url = `${API_URL}/coupons`;
           const params = new URLSearchParams();
           if (selectedCategory) params.append('categoryId', selectedCategory);
           if (searchQuery) params.append('query', searchQuery);
@@ -209,7 +211,7 @@ function CouponsContent() {
     e.preventDefault();
     setLoading(true);
     try {
-      let url = 'http://localhost:3001/coupons';
+      let url = `${API_URL}/coupons`;
       const params = new URLSearchParams();
       if (selectedCategory) params.append('categoryId', selectedCategory);
       if (searchQuery) params.append('query', searchQuery);
@@ -233,7 +235,7 @@ function CouponsContent() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:3001/personalization/favorite/coupon/${couponId}`, {
+      const res = await fetch(`${API_URL}/personalization/favorite/coupon/${couponId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -265,7 +267,7 @@ function CouponsContent() {
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/coupons/${coupon.id}/redeem`, {
+      const res = await fetch(`${API_URL}/coupons/${coupon.id}/redeem`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });

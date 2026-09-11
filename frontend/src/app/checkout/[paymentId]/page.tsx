@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -58,7 +60,7 @@ export default function CheckoutPage({
       }
 
       try {
-        const res = await fetch(`http://localhost:3001/payments/${paymentId}`, {
+        const res = await fetch(`${API_URL}/payments/${paymentId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -137,7 +139,7 @@ export default function CheckoutPage({
     try {
       // Notificar al Webhook de Stripe en el Backend
       const webhookRes = await fetch(
-        `http://localhost:3001/payments/webhook/stripe`,
+        `${API_URL}/payments/webhook/stripe`,
         {
           method: 'POST',
           headers: {

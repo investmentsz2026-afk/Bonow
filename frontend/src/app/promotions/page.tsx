@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -84,7 +86,7 @@ export default function PromotionsPage() {
     const fetchPromotionsPage = async () => {
       try {
         const res = await fetch(
-          'http://localhost:3001/coupons/promotions-page',
+          `${API_URL}/coupons/promotions-page`,
         );
         if (res.ok) {
           const data = await res.json();
@@ -101,7 +103,7 @@ export default function PromotionsPage() {
 
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:3001/coupons/categories');
+        const res = await fetch(`${API_URL}/coupons/categories`);
         if (res.ok) {
           const cats = await res.json();
           if (Array.isArray(cats)) {

@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -185,7 +187,7 @@ export default function UserDashboard() {
 
       try {
         // 1. Obtener Perfil de usuario
-        const resProfile = await fetch('http://localhost:3001/users/profile', {
+        const resProfile = await fetch(`${API_URL}/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -228,10 +230,10 @@ export default function UserDashboard() {
 
         // 2. Fetch de Datos Reales en paralelo
         const [resCats, resAds, resCoupons, resBranches] = await Promise.all([
-          fetch('http://localhost:3001/coupons/categories'),
-          fetch('http://localhost:3001/advertising/active'),
-          fetch('http://localhost:3001/coupons'),
-          fetch('http://localhost:3001/coupons/branches/map'),
+          fetch(`${API_URL}/coupons/categories`),
+          fetch(`${API_URL}/advertising/active`),
+          fetch(`${API_URL}/coupons`),
+          fetch(`${API_URL}/coupons/branches/map`),
         ]);
 
         if (isMounted) {

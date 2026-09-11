@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -189,7 +191,7 @@ export default function BusinessCouponsPage() {
     try {
       // 1. Obtener cupones creados
       const resCoupons = await fetch(
-        'http://localhost:3001/coupons/business/my-coupons',
+        `${API_URL}/coupons/business/my-coupons`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -205,7 +207,7 @@ export default function BusinessCouponsPage() {
 
       // 2. Obtener sucursales
       const resCompany = await fetch(
-        'http://localhost:3001/companies/my-company',
+        `${API_URL}/companies/my-company`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -217,7 +219,7 @@ export default function BusinessCouponsPage() {
 
       // 4. Obtener promociones destacadas enviadas por la empresa
       const resAds = await fetch(
-        'http://localhost:3001/advertising/business/my-ads',
+        `${API_URL}/advertising/business/my-ads`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -229,7 +231,7 @@ export default function BusinessCouponsPage() {
 
       // 5. Obtener saldo de créditos de cupones y paquetes
       const resBalance = await fetch(
-        'http://localhost:3001/coupons/credit-balance',
+        `${API_URL}/coupons/credit-balance`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -254,7 +256,7 @@ export default function BusinessCouponsPage() {
     setBuyingPackageId(packageId);
     try {
       const res = await fetch(
-        'http://localhost:3001/payments/stripe/create-credit-checkout-session',
+        `${API_URL}/payments/stripe/create-credit-checkout-session`,
         {
           method: 'POST',
           headers: {
@@ -294,7 +296,7 @@ export default function BusinessCouponsPage() {
 
       try {
         const resCoupons = await fetch(
-          'http://localhost:3001/coupons/business/my-coupons',
+          `${API_URL}/coupons/business/my-coupons`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -307,7 +309,7 @@ export default function BusinessCouponsPage() {
         const dataCoupons = await resCoupons.json();
 
         const resCompany = await fetch(
-          'http://localhost:3001/companies/my-company',
+          `${API_URL}/companies/my-company`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -315,14 +317,14 @@ export default function BusinessCouponsPage() {
         const dataCompany = await resCompany.json();
 
         const resAds = await fetch(
-          'http://localhost:3001/advertising/business/my-ads',
+          `${API_URL}/advertising/business/my-ads`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
 
         const resBalance = await fetch(
-          'http://localhost:3001/coupons/credit-balance',
+          `${API_URL}/coupons/credit-balance`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -343,7 +345,7 @@ export default function BusinessCouponsPage() {
             setCreditInfo(dataBalance as CreditBalanceInfo);
           }
           const resCategories = await fetch(
-            'http://localhost:3001/coupons/categories/list',
+            `${API_URL}/coupons/categories/list`,
           );
           if (resCategories.ok) {
             const dataCategories = await resCategories.json();
@@ -388,7 +390,7 @@ export default function BusinessCouponsPage() {
     const token = localStorage.getItem('accessToken');
     try {
       const res = await fetch(
-        'http://localhost:3001/advertising/business/create',
+        `${API_URL}/advertising/business/create`,
         {
           method: 'POST',
           headers: {
@@ -482,8 +484,8 @@ export default function BusinessCouponsPage() {
 
     const token = localStorage.getItem('accessToken');
     const url = editingCoupon
-      ? `http://localhost:3001/coupons/${editingCoupon.id}`
-      : 'http://localhost:3001/coupons';
+      ? `${API_URL}/coupons/${editingCoupon.id}`
+      : `${API_URL}/coupons`;
     const method = editingCoupon ? 'PUT' : 'POST';
 
     const effectiveCategoryIds = selectedCategories.length > 0
@@ -540,7 +542,7 @@ export default function BusinessCouponsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch(`http://localhost:3001/coupons/${couponId}`, {
+      const res = await fetch(`${API_URL}/coupons/${couponId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -566,7 +568,7 @@ export default function BusinessCouponsPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/coupons/${coupon.id}/status`,
+        `${API_URL}/coupons/${coupon.id}/status`,
         {
           method: 'PUT',
           headers: {
@@ -597,7 +599,7 @@ export default function BusinessCouponsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch('http://localhost:3001/coupons/validate-code', {
+      const res = await fetch(`${API_URL}/coupons/validate-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

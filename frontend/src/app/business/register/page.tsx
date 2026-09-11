@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -42,7 +44,7 @@ export default function BusinessRegisterPage() {
 
     const checkExisting = async () => {
       try {
-        const res = await fetch('http://localhost:3001/companies/my-company', {
+        const res = await fetch(`${API_URL}/companies/my-company`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -80,8 +82,8 @@ export default function BusinessRegisterPage() {
 
     try {
       const url = isExistingCompany
-        ? 'http://localhost:3001/companies/my-company'
-        : 'http://localhost:3001/companies';
+        ? `${API_URL}/companies/my-company`
+        : `${API_URL}/companies`;
       const method = isExistingCompany ? 'PUT' : 'POST';
 
       const res = await fetch(url, {

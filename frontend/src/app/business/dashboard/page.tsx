@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -141,7 +143,7 @@ export default function BusinessDashboard() {
     if (!token) return;
     setSavingCompany(true);
     try {
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +199,7 @@ export default function BusinessDashboard() {
     const fetchCats = async () => {
       try {
         const res = await fetch(
-          'http://localhost:3001/coupons/categories/list',
+          `${API_URL}/coupons/categories/list`,
         );
         if (res.ok) {
           const data = await res.json();
@@ -217,8 +219,8 @@ export default function BusinessDashboard() {
     try {
       const isEdit = !!branchForm.id;
       const url = isEdit
-        ? `http://localhost:3001/companies/my-company/branches/${branchForm.id}`
-        : 'http://localhost:3001/companies/my-company/branches';
+        ? `${API_URL}/companies/my-company/branches/${branchForm.id}`
+        : `${API_URL}/companies/my-company/branches`;
       const method = isEdit ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -256,7 +258,7 @@ export default function BusinessDashboard() {
     if (!token) return;
     try {
       const res = await fetch(
-        `http://localhost:3001/companies/my-company/branches/${branchId}`,
+        `${API_URL}/companies/my-company/branches/${branchId}`,
         {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
@@ -292,7 +294,7 @@ export default function BusinessDashboard() {
     setValidationResult(null);
 
     try {
-      const res = await fetch('http://localhost:3001/coupons/validate-code', {
+      const res = await fetch(`${API_URL}/coupons/validate-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -329,7 +331,7 @@ export default function BusinessDashboard() {
       }
 
       try {
-        const res = await fetch('http://localhost:3001/companies/my-company', {
+        const res = await fetch(`${API_URL}/companies/my-company`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -348,7 +350,7 @@ export default function BusinessDashboard() {
         if (!res.ok) throw new Error(data.message || 'Error al obtener datos');
 
         // Obtener cupones completos de la empresa
-        const resCoupons = await fetch('http://localhost:3001/coupons/business/my-coupons', {
+        const resCoupons = await fetch(`${API_URL}/coupons/business/my-coupons`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         let coupons: Coupon[] = [];
@@ -357,7 +359,7 @@ export default function BusinessDashboard() {
         }
 
         // Obtener redenciones reales de la empresa en caja
-        const resRedemptions = await fetch('http://localhost:3001/coupons/business/redemptions', {
+        const resRedemptions = await fetch(`${API_URL}/coupons/business/redemptions`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         let redemptionsData: any[] = [];

@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -119,7 +121,7 @@ function ProfileContent() {
       }
 
       try {
-        const res = await fetch('http://localhost:3001/users/profile', {
+        const res = await fetch(`${API_URL}/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -146,7 +148,7 @@ function ProfileContent() {
         // Intentar obtener datos de empresa si es usuario BUSINESS
         try {
           const resComp = await fetch(
-            'http://localhost:3001/companies/my-company',
+            `${API_URL}/companies/my-company`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -181,7 +183,7 @@ function ProfileContent() {
 
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch('http://localhost:3001/users/link-card', {
+      const res = await fetch(`${API_URL}/users/link-card`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -239,7 +241,7 @@ function ProfileContent() {
 
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch('http://localhost:3001/users/profile', {
+      const res = await fetch(`${API_URL}/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -293,7 +295,7 @@ function ProfileContent() {
         if (company.website) payload.website = company.website;
       }
 
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -327,7 +329,7 @@ function ProfileContent() {
 
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch('http://localhost:3001/users/change-password', {
+      const res = await fetch(`${API_URL}/users/change-password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -364,7 +366,7 @@ function ProfileContent() {
     if (type === 'push') setPushNotifications(val);
 
     try {
-      await fetch('http://localhost:3001/users/notifications', {
+      await fetch(`${API_URL}/users/notifications`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Header } from './Header';

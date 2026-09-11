@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -53,7 +55,7 @@ export default function AdminCompaniesPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/companies', {
+      const res = await fetch(`${API_URL}/companies`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -78,7 +80,7 @@ export default function AdminCompaniesPage() {
         return;
       }
       try {
-        const res = await fetch('http://localhost:3001/companies', {
+        const res = await fetch(`${API_URL}/companies`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -114,7 +116,7 @@ export default function AdminCompaniesPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/companies/${companyId}/status`,
+        `${API_URL}/companies/${companyId}/status`,
         {
           method: 'PUT',
           headers: {

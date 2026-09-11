@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -63,8 +65,8 @@ export default function BusinessCategoriesPage() {
       setLoading(true);
       try {
         const [resCats, resCompany] = await Promise.all([
-          fetch('http://localhost:3001/coupons/categories'),
-          fetch('http://localhost:3001/companies/my-company', {
+          fetch(`${API_URL}/coupons/categories`),
+          fetch(`${API_URL}/companies/my-company`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -127,7 +129,7 @@ export default function BusinessCategoriesPage() {
 
     try {
       const categoryIdsArray = Array.from(selectedCategoryIds);
-      const res = await fetch('http://localhost:3001/companies/my-company', {
+      const res = await fetch(`${API_URL}/companies/my-company`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

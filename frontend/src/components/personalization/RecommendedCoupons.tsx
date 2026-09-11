@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import {
   Sparkles,
@@ -74,7 +76,7 @@ export default function RecommendedCoupons({ onViewCoupon }: Props) {
         }
 
         const res = await fetch(
-          `http://localhost:3001/personalization/recommendations?${latParam}${lngParam}`,
+          `${API_URL}/personalization/recommendations?${latParam}${lngParam}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -109,7 +111,7 @@ export default function RecommendedCoupons({ onViewCoupon }: Props) {
 
     try {
       await fetch(
-        `http://localhost:3001/personalization/favorite/coupon/${couponId}`,
+        `${API_URL}/personalization/favorite/coupon/${couponId}`,
         {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },

@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -156,10 +158,10 @@ export default function ExplorePage() {
       try {
         // Cargar en paralelo todas las secciones
         const [resPromos, resCoupons, resCompanies, resCategories] = await Promise.all([
-          fetch('http://localhost:3001/coupons/promotions-page'),
-          fetch('http://localhost:3001/coupons'),
-          fetch('http://localhost:3001/coupons/companies/public'),
-          fetch('http://localhost:3001/coupons/categories'),
+          fetch(`${API_URL}/coupons/promotions-page`),
+          fetch(`${API_URL}/coupons`),
+          fetch(`${API_URL}/coupons/companies/public`),
+          fetch(`${API_URL}/coupons/categories`),
         ]);
 
         if (isMounted) {
@@ -200,7 +202,7 @@ export default function ExplorePage() {
         // Cargar favoritos del usuario si está autenticado
         if (token && isMounted) {
           try {
-            const resFavs = await fetch('http://localhost:3001/personalization/favorite/coupon-ids', {
+            const resFavs = await fetch(`${API_URL}/personalization/favorite/coupon-ids`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (resFavs.ok) {
@@ -232,7 +234,7 @@ export default function ExplorePage() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:3001/personalization/favorite/coupon/${couponId}`, {
+      const res = await fetch(`${API_URL}/personalization/favorite/coupon/${couponId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -258,7 +260,7 @@ export default function ExplorePage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/coupons/${coupon.id}/redeem`, {
+      const res = await fetch(`${API_URL}/coupons/${coupon.id}/redeem`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });

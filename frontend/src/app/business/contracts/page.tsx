@@ -1,5 +1,7 @@
 'use client';
 
+import { API_URL } from '@/lib/api';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
@@ -117,7 +119,7 @@ export default function BusinessContractsPage() {
     if (!token) return;
 
     try {
-      const res = await fetch('http://localhost:3001/contracts/my-contracts', {
+      const res = await fetch(`${API_URL}/contracts/my-contracts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -154,7 +156,7 @@ export default function BusinessContractsPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/contracts/${contract.id}/history`,
+        `${API_URL}/contracts/${contract.id}/history`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
