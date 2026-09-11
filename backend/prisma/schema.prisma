@@ -44,6 +44,7 @@ model User {
   payments               Payment[]
   notifications          Notification[]
   virtualCard            VirtualCard?
+  supportTickets         SupportTicket[]
 }
 
 model Role {
@@ -173,6 +174,7 @@ model Company {
   advertising Advertising[]
   favorites   FavoriteCompany[]
   contracts   Contract[]
+  supportTickets SupportTicket[]
 }
 
 model Branch {
@@ -436,3 +438,48 @@ model VirtualCard {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketCategory {
+  GENERAL
+  MEMBERSHIP
+  COUPONS
+  PAYMENTS
+  BUSINESS_ACCOUNT
+  TECHNICAL_ISSUE
+}
+
+model SupportTicket {
+  id           String         @id @default(uuid())
+  ticketNumber String         @unique
+  subject      String
+  category     TicketCategory @default(GENERAL)
+  status       TicketStatus   @default(OPEN)
+  senderType   String         @default("USER") // USER, BUSINESS
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?       @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  messages     SupportMessage[]
+}
+
+model SupportMessage {
+  id         String        @id @default(uuid())
+  ticketId   String
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  senderId   String
+  senderName String
+  senderRole String        // USER, BUSINESS, ADMIN
+  message    String
+  createdAt  DateTime      @default(now())
+}
+

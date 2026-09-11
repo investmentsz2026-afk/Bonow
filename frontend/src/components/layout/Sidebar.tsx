@@ -143,6 +143,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         { label: 'Mapa Sucursales', icon: MapPin, faIcon: faMapMarkerAlt, href: '/dashboard/map' },
         { label: 'Reportes Plataforma', icon: TrendingUp, faIcon: faChartLine, href: '/dashboard/analytics' },
         { label: 'Notificaciones', icon: Bell, faIcon: faConciergeBell, href: '/dashboard/notifications' },
+        { label: 'Mensajes de Soporte', icon: HelpCircle, faIcon: faQuestionCircle, href: '/admin/support' },
       ];
     }
 
@@ -157,6 +158,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         { label: 'Mapa Sucursales', icon: MapPin, faIcon: faMapMarkerAlt, href: '/business/map' },
         { label: 'Reportes y Ventas', icon: TrendingUp, faIcon: faChartLine, href: '/dashboard/analytics' },
         { label: 'Notificaciones', icon: Bell, faIcon: faConciergeBell, href: '/dashboard/notifications' },
+        { label: 'Ayuda y Soporte', icon: HelpCircle, faIcon: faQuestionCircle, href: '/dashboard/support' },
       ];
     }
 
@@ -171,7 +173,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       { label: 'Mi Membresía', icon: ShieldAlert, href: '/dashboard/membership' },
       { label: 'Notificaciones', icon: Bell, href: '/dashboard/notifications' },
       { label: 'Mi Perfil', icon: UserIcon, href: '/profile' },
-      { label: 'Ayuda y Soporte', icon: HelpCircle, href: '#' },
+      { label: 'Ayuda y Soporte', icon: HelpCircle, faIcon: faQuestionCircle, href: '/dashboard/support' },
     ];
   };
 

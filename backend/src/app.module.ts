@@ -16,6 +16,7 @@ import { PersonalizationModule } from './personalization/personalization.module'
 import { ContractsModule } from './contracts/contracts.module';
 import { AdminModule } from './admin/admin.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { SupportModule } from './support/support.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
@@ -36,6 +37,7 @@ import { APP_GUARD } from '@nestjs/core';
     ContractsModule,
     AdminModule,
     NotificationsModule,
+    SupportModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000, // 1 minuto
