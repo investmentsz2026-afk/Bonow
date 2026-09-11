@@ -44,7 +44,7 @@ async function main() {
 
   // 2. Crear Usuario Administrador Principal
   const adminEmail = 'admin@wynni.com';
-  const hashedPassword = bcrypt.hashSync('admin123password', 10);
+  const hashedPassword = bcrypt.hashSync('admin123', 10);
 
   const adminUser = await prisma.user.upsert({
     where: { email: adminEmail },
@@ -67,7 +67,7 @@ async function main() {
     },
   });
 
-  console.log(`✅ Usuario Admin verificado: ${adminUser.email} (Password: admin123password)`);
+  console.log(`✅ Usuario Admin verificado: ${adminUser.email} (Password: admin123)`);
 
   // 3. Crear Categorías por Defecto
   const defaultCategories = [
