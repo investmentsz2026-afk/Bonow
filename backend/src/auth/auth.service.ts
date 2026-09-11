@@ -37,7 +37,7 @@ export class AuthService implements OnModuleInit {
 
     // Crear o actualizar super administrador por defecto
     const adminEmail = 'admin@wynni.com';
-    const hashedPassword = await this.hashingService.hash('adminwynni123');
+    const hashedPassword = await this.hashingService.hash('admin123');
 
     const adminUser = await this.prisma.user.upsert({
       where: { email: adminEmail },
@@ -61,7 +61,7 @@ export class AuthService implements OnModuleInit {
       },
     });
     console.log(
-      'Super administrador configurado: admin@wynni.com / adminwynni123',
+      'Super administrador configurado: admin@wynni.com / admin123',
     );
 
     // Asegurar que la empresa administradora de cupones del sistema exista
