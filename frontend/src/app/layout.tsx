@@ -90,6 +90,14 @@ export const metadata: Metadata = {
   verification: {
     google: 'google-site-verification-bonow-seo-mx',
   },
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
